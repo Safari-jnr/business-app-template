@@ -1,24 +1,45 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Stack } from "expo-router";
+import React, { createContext, useContext, useState } from "react";
+import { ActivityIndicator, View } from "react-native";
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+const AuthContext = createContext<any>(null);
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const login = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsAuthenticated(true);
+      setIsLoading(false);
+    }, 1000);
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+  };
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#007BFF" />
+      </View>
+    );
+  }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+      <Stack screenOptions={{ headerShown: false }}>
+        {/*  */}
+        {!isAuthenticated ? (
+          <Stack.Screen name="login" />
+        ) : (
+          <Stack.Screen name="(tabs)" />
+        )}
       </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    </AuthContext.Provider>
   );
 }
+
+export const useAuth = () => useContext(AuthContext);

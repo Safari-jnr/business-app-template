@@ -1,37 +1,59 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { ServiceCard } from "../components/ServiceCard";
+import { COLORS, SIZES } from "../constants/theme";
 
-const services = [
-  { id: "1", name: "Web Development" },
-  { id: "2", name: "Mobile App Development" },
-  { id: "3", name: "UI/UX Design" },
+const MOCK_SERVICES = [
+  {
+    id: "1",
+    title: "Cloud Infrastructure",
+    icon: "",
+    desc: "Secure AWS/Azure setups.",
+  },
+  {
+    id: "2",
+    title: "Custom CRM",
+    icon: "",
+    desc: "Manage your leads effectively.",
+  },
+  {
+    id: "3",
+    title: "Mobile Solutions",
+    icon: "",
+    desc: "iOS and Android native apps.",
+  },
 ];
 
 export default function ServicesScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Our Services</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.greeting}>Service Catalog</Text>
+        <Text style={styles.subtext}>
+          Select a service to view technical specs.
+        </Text>
+      </View>
 
       <FlatList
-        data={services}
+        data={MOCK_SERVICES}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.text}>{item.name}</Text>
-          </View>
+          <ServiceCard
+            title={item.title}
+            icon={item.icon}
+            description={item.desc}
+            onPress={() => console.log(`Selected ${item.title}`)}
+          />
         )}
+        contentContainerStyle={{ padding: SIZES.padding }}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 15 },
-  card: {
-    padding: 15,
-    backgroundColor: "#0A84FF",
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  text: { color: "#fff", fontSize: 16 },
+  container: { flex: 1, backgroundColor: COLORS.background },
+  header: { padding: SIZES.padding, paddingTop: 40 },
+  greeting: { fontSize: 28, fontWeight: "800", color: COLORS.text },
+  subtext: { fontSize: 16, color: COLORS.secondary, marginTop: 4 },
 });

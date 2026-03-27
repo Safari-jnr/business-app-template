@@ -1,41 +1,41 @@
+import React from "react";
 import {
-  SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { COLORS } from "../../src/constants/theme";
+import { useAuth } from "../_layout";
 
 export default function HomeScreen() {
+  const { logout } = useAuth();
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        {/* Hero Section */}
-        <View style={styles.hero}>
-          <Text style={styles.badge}>STRATEGY & GROWTH</Text>
-          <Text style={styles.title}>Elevate Your Business Presence</Text>
-          <Text style={styles.subtitle}>
-            We build high-performance digital solutions tailored to your brand's
-            unique needs.
-          </Text>
+      <View style={styles.header}>
+        <View>
+          <Text style={styles.greeting}>Welcome Back</Text>
+          <Text style={styles.subtitle}>Business Overview</Text>
         </View>
-
-        {/* Feature/Service Card */}
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Custom Web Solutions</Text>
-          <Text style={styles.cardDescription}>
-            Modern, scalable architectures built for speed and security.
-          </Text>
-          <TouchableOpacity>
-            <Text style={styles.linkText}>Learn More →</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Primary Action Button */}
-        <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-          <Text style={styles.buttonText}>Get Started</Text>
+        <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+          <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
       </View>
+
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.statCard}>
+          <Text style={styles.statLabel}>Active Projects</Text>
+          <Text style={styles.statValue}>12</Text>
+        </View>
+
+        <View style={styles.statCard}>
+          <Text style={styles.statLabel}>Pending Inquiries</Text>
+          <Text style={styles.statValue}>5</Text>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -43,71 +43,54 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8F9FA", // Soft light grey background (more premium than pure white)
+    backgroundColor: COLORS.background,
   },
-  content: {
-    flex: 1,
-    paddingHorizontal: 24,
-    justifyContent: "center",
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 20,
   },
-  hero: {
-    marginBottom: 40,
-  },
-  badge: {
-    color: "#007AFF",
-    fontWeight: "700",
-    fontSize: 12,
-    letterSpacing: 1.2,
-    marginBottom: 8,
-  },
-  title: {
-    fontSize: 32,
+  greeting: {
+    fontSize: 24,
     fontWeight: "800",
-    color: "#1A1A1A",
-    lineHeight: 40,
+    color: COLORS.text,
   },
   subtitle: {
-    marginTop: 16,
-    fontSize: 16,
-    color: "#666",
-    lineHeight: 24,
-  },
-  card: {
-    backgroundColor: "#FFFFFF",
-    padding: 20,
-    borderRadius: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 5,
-    marginBottom: 30,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#1A1A1A",
-  },
-  cardDescription: {
-    marginTop: 8,
     fontSize: 14,
-    color: "#777",
-    lineHeight: 20,
+    color: COLORS.secondary,
   },
-  linkText: {
-    marginTop: 12,
-    color: "#007AFF",
+  logoutButton: {
+    backgroundColor: "#FEE2E2",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  logoutText: {
+    color: "#EF4444",
+    fontWeight: "700",
+    fontSize: 13,
+  },
+  content: {
+    padding: 20,
+  },
+  statCard: {
+    backgroundColor: COLORS.card,
+    padding: 24,
+    borderRadius: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  statLabel: {
+    fontSize: 14,
+    color: COLORS.secondary,
     fontWeight: "600",
   },
-  button: {
-    backgroundColor: "#1A1A1A",
-    paddingVertical: 18,
-    borderRadius: 12,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "700",
+  statValue: {
+    fontSize: 32,
+    fontWeight: "800",
+    color: COLORS.text,
+    marginTop: 4,
   },
 });
